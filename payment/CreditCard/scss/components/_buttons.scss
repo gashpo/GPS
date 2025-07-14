@@ -1,0 +1,37 @@
+button {
+  width: 100%;
+  overflow: hidden;
+  padding: 12px 16px;
+  border-radius: 8px;
+  @include font(16, Medium);
+  color: map-get($color, off-white);
+  background-color: map-get($color, primaryA);
+  transition: all 0.3s ease;
+  z-index: 1;
+
+  &:disabled {
+    background-color: map-get($color, disabled);
+    cursor: auto;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: map-get($color, disabled);
+      }
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: map-get($color, primaryB);
+      transition: all 0.3s ease;
+    }
+  }
+
+  &.underlined {
+    border-radius: 0;
+    background-color: transparent;
+    color: map-get($color, primaryA);
+    padding: 0 !important;
+    border-bottom: 1px solid map-get($color, primaryA);
+  }
+}

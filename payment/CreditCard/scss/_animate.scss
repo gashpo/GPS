@@ -1,0 +1,23 @@
+// checkbox
+@keyframes checkbox-checked {
+	50% {
+		width: 0;
+		height: 4px;
+	}
+	100% {
+		width: 8px;
+		height: 4px;
+	}
+}
+
+//load
+@keyframes ani-dot {
+	0% {
+	  -webkit-transform: scale(1);
+			  transform: scale(1);
+	}
+	100% {
+	  -webkit-transform: scale(0.3);
+			  transform: scale(0.3);
+	}
+}

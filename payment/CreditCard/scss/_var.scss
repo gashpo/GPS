@@ -1,0 +1,100 @@
+// RWD 斷點
+$breakpoints: (
+  "medium-pc": 1440px,
+  "small-pc": 1200px,
+  "pad": 1024px,
+  "small-pad": 768px,
+  "phone": 516px,
+  "small-phone": 320px,
+);
+
+// 字型
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;200;300;400;500;600;700;900&display=swap");
+
+$font: (
+  "Varela": (
+    "Varela",
+    "Noto Sans TC",
+    sans-serif,
+  ),
+  "NotoSans": (
+    "Noto Sans TC",
+    sans-serif,
+  ),
+);
+
+// 字重
+$font-weight: (
+  "Thin": 100,
+  // Noto Sans Only
+  "ExLight": 200,
+  // Noto Serif Only
+  "Light": 300,
+  "Regular": 400,
+  "Medium": 500,
+  "SemiBold": 600,
+  // Noto Serif Only
+  "Bold": 700,
+  "ExBold": 900,
+);
+// 用法：
+// .fw-100 {
+//     font-weight: map-get($font-weight, Thin);
+// }
+
+// 字級
+$font-size: 16px !default;
+
+// 色彩定義
+$color: (
+  "primaryA": #353b50,
+  "primaryB": #1e2333,
+
+  "secondaryA": #ff8412,
+
+  "off-white": #fff,
+  "dark": #333333,
+  "disabled": #dddddd,
+  "off-pink": #e72e6b,
+
+  // 對照Figma重新整理色票
+  "BlueGray-100": #afb4c2,
+  "BlueGray-200": #9a9da7,
+  "BlueGray-300": #62616e,
+  "BlueGray-400": #54596d,
+  "BlueGray-500": #353b50,
+  "BlueGray-600": #2a2f40,
+  "BlueGray-700": #1e2333,
+  "BlueGray-800": #151820,
+  "BlueGray-900": #0b0c10,
+
+  "Primary-500": #e72e6b,
+
+  "Gray-0": #ffffff,
+  "Gray-100": #f8f8f8,
+  "Gray-150": #f6f6f6,
+  "Gray-200": #f2f2f2,
+  "Gray-300": #eeeeee,
+  "Gray-500": #dddddd,
+  "Gray-600": #bfbfbf,
+  "Gray-700": #a2a2a2,
+  "Gray-800": #848484,
+  "Gray-900": #676767,
+
+  "Alert-50": #fff1f6,
+  "Alert-100": #fad5e1,
+  "Alert-200": #f5abc4,
+  "Alert-300": #f182a6,
+  "Alert-400": #ec5889,
+  "Alert-500": #e72e6b,
+  "Alert-600": #b92556,
+  "Alert-700": #8b1c40,
+  "Alert-800": #5c122b,
+  "Alert-900": #2e0915,
+
+  "Orange-500": #ff8412,
+
+  "FunOne-50": #f0e5fd,
+  "FunOne-300": #a366f5,
+  "FunOne-500": #6500ee,
+);

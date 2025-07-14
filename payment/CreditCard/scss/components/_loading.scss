@@ -1,0 +1,52 @@
+.btn-load-more {
+    display: none;
+    width: 102px;
+    border-radius: 0 8px 8px 0 ;
+    background-color: map-get($color, disabled);
+    background: none;
+    cursor: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 19px 0;
+
+    @media (hover: hover){
+        &:hover {
+            background-color: map-get($color, disabled);
+        }
+    }
+
+    &::after{
+        content: ' ';
+        display: block;
+        margin: 0 auto;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-load-more__dots {
+        display: block;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .btn-load-more__dot {
+            display: inline-block;
+            margin-right: calc(0.25rem / 2);
+            margin-left: calc(0.25rem / 2);
+            width: 0.25rem;
+            height: 0.25rem;
+            background: map-get($color, primaryA);
+            border-radius: 9px;
+            animation: ani-dot 1s infinite alternate;
+
+            &.dot-2{
+                animation-delay: 0.12s;
+            }
+
+            &.dot-3{
+                animation-delay: 0.24s;
+            }
+        }
+      }
+  }

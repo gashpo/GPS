@@ -1,0 +1,156 @@
+label {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  @include font(15, SemiBold);
+  color: map-get($color, primaryA);
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid map-get($color, disabled);
+  border-radius: 8px;
+  @include font(14);
+  color: map-get($color, primaryA);
+  background-color: map-get($color, off-white);
+
+  &::placeholder {
+    color: map-get($color, primaryA);
+    opacity: 0.5;
+  }
+
+  &:focus {
+    border: 1px solid map-get($color, primaryA);
+  }
+
+  &:disabled {
+    opacity: 1;
+    cursor: auto;
+    background: none;
+    background-color: map-get($color, disabled);
+  }
+
+  &:autofill,
+  &:autofill:hover,
+  &:autofill:focus,
+  &:autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  &:-webkit-autofill {
+    background-color: rgb(250, 255, 189) !important;
+    background-image: none !important;
+    color: red !important;
+  }
+
+  &.checkbox {
+    display: none;
+    width: auto;
+    cursor: pointer;
+
+    & + label {
+      position: relative;
+      padding-left: 25px;
+      @include font(14);
+      color: map-get($color, primaryA);
+      cursor: pointer;
+
+      &::before {
+        content: " ";
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        background: map-get($color, off-white);
+        border: 1px solid map-get($color, disabled);
+        border-radius: 4px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        transition: all 0.3s;
+      }
+
+      &::after {
+        content: "";
+        width: 0;
+        height: 0;
+        border: 0 solid map-get($color, off-white);
+        border-top: 0 none;
+        border-right: 0 none;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-transform-origin: left top;
+        transform-origin: left top;
+        position: absolute;
+        top: 50%;
+        left: 3px;
+      }
+    }
+
+    &:checked {
+      & + label::before {
+        border-color: map-get($color, primaryA);
+        background: map-get($color, primaryA);
+      }
+
+      & + label::after {
+        border-width: 2px;
+        animation: checkbox-checked 0.5s forwards;
+      }
+    }
+  }
+}
+
+select {
+  appearance: none;
+  background-image: url(../img/icon/arrow.svg);
+  background-repeat: no-repeat;
+  background-size: 16px auto;
+  background-position: center right 8px;
+  cursor: pointer;
+}
+
+.info {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  @include font(12);
+
+  &.is-error {
+    color: map-get($color, off-pink);
+  }
+
+  &.is-tip {
+    color: map-get($color, BlueGray-200);
+  }
+}
+
+.credit-card {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid map-get($color, disabled);
+  border-radius: 8px;
+
+  input {
+    width: 35px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+  }
+
+  &.date {
+    @include font(14);
+    color: rgba(map-get($color, primaryA), 0.5);
+
+    input {
+      width: 25px;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+// RWD 斷點
+@mixin max-to($bp) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $bp) {
+    // Prints a media query based on the value
+    @media (max-width: map-get($breakpoints, $bp)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$bp}`. "
+        +"Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+// 字級+字重+字體
+@mixin font($fs: 28, $fw: Regular) {
+  font-weight: map-get($font-weight, $fw);
+  font-size: calc($fs / 16 * $font-size);
+}
+
+// 用法：
+// .NotoSans200 {
+//     @include font(map-get($font, NotoSans), map-get($font-weight, Thin), 24);
+// }
+
+// 字重
+@mixin font-weight($fw: SemiBold) {
+  font-weight: map-get($font-weight, $fw);
+}
+
+// 顏色
+@each $name, $color in $color {
+  .color-#{$name} {
+    color: $color;
+  }
+
+  .bg-#{$name} {
+    background-color: $color;
+  }
+}
+
+// 超連結顏色
+@mixin a-color(
+  $default: map-get($color, dark),
+  $hover: map-get($color, primaryA)
+) {
+  color: $default;
+  transition: color 0.5s;
+  text-decoration: none;
+
+  @media (hover: hover) {
+    &:hover {
+      color: $hover;
+    }
+  }
+}
