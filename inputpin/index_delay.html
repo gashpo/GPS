@@ -1,0 +1,339 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Global Payment System</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+    <link href="./Content/new.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-YP8RTNJ7DP&amp;cx=c&amp;_slc=1"></script>
+    <script src="./Scripts/jquery-1.11.2.min.js"></script>
+    <script src="./Scripts/jquery.blockUI.js"></script>
+    <script src="./Scripts/jquery.validate.min.js"></script>
+    <script src="./Scripts/html5-qrcode@2.3.8.min.js"></script>
+    <script src="./Scripts/qrcode-scanner-init.js"></script>
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        // Html5Qrcode scanner
+        qrcodeScannerInit({
+            inputSelector: "#txtPin",
+            buttonSelector: "#openscanner",
+        });
+
+        $("#txtPin").focus();
+    });
+
+    //Detected Pin text when key down
+    function pinKeyDown(key) {
+        if (key.keyCode == 13) return false;
+        else if (key.keyCode == 123) {
+            if (navigator.userAgent.match(/(GoogleTV|SmartTV|Internet.TV|NetCast|NETTV|AppleTV|boxee|Kylo|Roku|DLNADOC|CE\-HTML|Xbox|PLAYSTATION.3|Wii|Viera)/i)) {
+                document.getElementById("btn_Enter").click();
+            }
+        }
+        return true;
+    }
+
+    function btnClientClick(obj) {
+        var pinText = $("#txtPin").val();
+        var regu = "^[a-h,j-n,p-z,A-H,J-N,P-Z,0-9]+$";
+        var re = new RegExp(regu);
+        var lang = "zh-tw";
+        var errMsg = "";
+
+        var mobile = $("#txtPhone").val();
+        var regu2 = "^[0-9]+$";
+        var re2 = new RegExp(regu2);
+        var errMsg2 = "";
+        var country = $("#GashMemberType").val();
+
+        if (document.getElementById("UserLanguage") != null && document.getElementById("UserLanguage").value != "") {
+            lang = document.getElementById("UserLanguage").value;
+        }
+
+        if (!re.test(pinText)) {
+            switch (lang.toLowerCase()) {
+                case "en":
+                case "en-us":
+                    errMsg += "Input contains illegal characters!";
+                default:
+                    errMsg += "輸入含不合法字元!";
+            }
+        }
+
+        if ($("#trGashMember").css("display") != "none") {
+            if (mobile.length != 0) {
+                if (!re2.test(mobile)) {
+                    switch (lang.toLowerCase()) {
+                        case "en":
+                        case "en-us":
+                            errMsg2 += "Input contains illegal characters!";
+                        default:
+                            errMsg2 += "輸入含不合法字元!";
+                    }
+                }
+            }
+            if ((country == "TW" && mobile.length != 10 && mobile.length != 0) || (country != "TW" && (mobile.length < 8 || mobile.length > 20) && mobile.length != 0)) {
+                errMsg2 = "";
+                switch (lang.toLowerCase()) {
+                    case "en":
+                    case "en-us":
+                        errMsg2 += "PhoneNumber format incorrect.";
+                        break;
+                    default:
+                        errMsg2 += "請輸入正確的手機號碼";
+                }
+            }
+        }
+
+        if ($("#trImageVerify").css("display") != "none" && $("#capok").val() != "OK") {
+            switch (lang.toLowerCase()) {
+                case "en":
+                case "en-us":
+                    errMsg += "CAPTCHA can't empty.<br/>";
+                    break;
+                default:
+                    errMsg += "請輸入圖形驗證碼<br/>";
+            }
+        }
+
+        if ((pinText.length != 14 && pinText.length != 21 && pinText.length != 20 && pinText.length != 10) || pinText.search(re) == -1) {
+            switch (lang.toLowerCase()) {
+                case "en":
+                case "en-us":
+                    errMsg += "PIN format incorrect .";
+                    break;
+                default:
+                    errMsg += "請輸入正確的儲值密碼";
+            }
+        }
+
+        if (errMsg2 != "") {
+            $("#ErrMsg").text("");
+            $("#ErrMsg_Gash").text(errMsg2);
+            $("#txtPhone").focus();
+            return false;
+        }
+
+        if (errMsg != "") {
+            $("#ErrMsg_Gash").text("");
+            $("#ErrMsg").text(errMsg);
+            $("#txtPin").focus();
+            return false;
+        } else {
+            obj.style.display = "none";
+            switch (lang.toLowerCase()) {
+                case "en":
+                case "en-us":
+                    $("#ErrMsg").text("Processing, please wait a minute ... ");
+                    break;
+                default:
+                    $("#ErrMsg").text("交易處理中，請稍候");
+            }
+            return true;
+        }
+    }
+
+    $("#txtPin").keydown(function(key) {
+        return pinKeyDown(key);
+    });
+
+    $("#btn_Enter").click(function() {
+        //將i和o變成壹和零(不分大小寫)
+        $("#txtPin").val($("#txtPin").val().replace(/o/gi, "0").replace(/i/gi, "1"));
+        if (btnClientClick(this) == false) {
+            return false;
+        }
+    });
+    $("#chkTransBooking").click(function() {
+        var boolCheck = $("#chkTransBooking").is(":checked");
+        if (boolCheck) {
+            $("#btn_Enter").attr("disabled", false);
+            $("#btn_Enter").css("background", "#e5006e");
+        } else {
+            $("#btn_Enter").attr("disabled", true);
+            $("#btn_Enter").css("background", "#808080");
+        }
+    });
+    </script>
+</head>
+
+<body>
+    <form action="/GPSv2/OrderProcess/Commit" method="post" novalidate="novalidate">
+        <input data-val="true" data-val-required="PaymentUrl 欄位是必要項。" id="PaymentUrl" name="PaymentUrl" type="hidden" value="PINHALL/index.aspx" />
+        <input data-val="true" data-val-required="RRN 欄位是必要項。" id="RRN" name="RRN" type="hidden" value="GP250317S0000086" />
+        <input data-val="true" data-val-required="PAID 欄位是必要項。" id="PAID" name="PAID" type="hidden" value="COPGAM02" />
+        <input data-val="true" data-val-required="UserLanguage 欄位是必要項。" id="UserLanguage" name="UserLanguage" type="hidden" value="zh-TW" /><input id="HasGashmemberInfo" name="HasGashmemberInfo" type="hidden" value="Y" />
+        <div class="row">
+            <header><img src="./images/logo_w.svg" width="200px" class="logo" /></header>
+            <input type="hidden" id="capok" value="" />
+            <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 gray_bg">
+                <span style="display: none;">
+                    <span class="point">* 點</span>
+                </span>
+                <label for="password" class="title_2"><span class="pw"></span>請輸入"儲值密碼" 進行儲值：</label><br />
+                <input class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-val="true" data-val-pinvalidation="請輸入正確的儲值密碼(PIN format incorrect)" data-val-required="請輸入儲值密碼(PIN is required)" id="txtPin" maxlength="21" name="Pin" placeholder="注意：儲值密碼為10、14或20或21碼英數字組合。" size="35" type="text" value="" />
+                <span id="openscanner">
+                    <div style="position: relative;">
+                        <img src="./images/qr_code_scanner_100dp.svg" style="cursor: pointer; height: 1.5em; transform: translateY(-50%); position: absolute; font-size: 2rem; top: 2rem; right: 0.5rem;" />
+                    </div>
+                    <div id="reader"></div>
+                </span>
+                <!--ShowImgVerify Start-->
+                <div id="trImageVerify" style="display: none;">
+                    <div class="validation-summary-valid" data-valmsg-summary="true">
+                        <ul>
+                            <li style="display: none;"></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--ShowImgVerify End-->
+                <br />
+                <!--GashMember Start-->
+                <div id="trGashMember" style="">
+                    <label for="account" class="title"><span class="account"></span>請輸入手機門號</label><br />
+                    <table width="100%" border="1">
+                        <tbody>
+                            <tr>
+                                <td width="14%">
+                                    <select id="GashMemberType" name="GashMemberType">
+                                        <option value="TW">台灣</option>
+                                        <option value="HK">香港</option>
+                                        <option value="MO">澳門</option>
+                                        <option value="US">美國</option>
+                                        <option value="SG">新加坡</option>
+                                        <option value="TL">泰國</option>
+                                        <option value="VN">越南</option>
+                                        <option value="MY">馬來西亞</option>
+                                        <option value="ID">印尼</option>
+                                        <option value="CN">中國</option>
+                                        <option value="JP">日本</option>
+                                        <option value="KR">韓國</option>
+                                    </select>
+                                </td>
+                                <td width="1%"></td>
+                                <td width="85%">
+                                    <input id="txtPhone" maxlength="20" name="GashMemberID" placeholder="選填" style="width: 100%;" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <span id="ErrMsg_Gash" class="alert"></span>
+                                    <span class="event_note">
+                                        <img src="images/info_icon.svg">
+                                        輸入手機門號，解鎖更多好康👇
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--GashMember End-->
+                <!--Booking Start-->
+                <div class="event_info">
+                    <ul>
+                        <li>
+                            <b>紅利積點</b>｜累積 FunOne Points 點數，兌換超值獎勵！
+                            <div class="scrollable">
+                                <div>
+                                    <p>※ 提交即同意紅利規範</p>
+                                    <h6>FunOne Points 紅利點數規約</h6>
+                                    <p>親愛的會員您好！為回饋您一直以來的支持，樂點股份有限公司(以下簡稱本公司、我們)特別推出 FunOne Points 紅利點數系統(下稱本服務)，讓您的儲值消費享受更多的回饋服務！為了保障您的權益，本公司訂定 FunOne Points 紅利點數規約(下稱本規約)，規範紅利點數之給付及使用等相關事宜。當您註冊成為 FunOne 會員並使用本服務，即代表您已閱讀、瞭解並同意遵守本規約及相關規範。</p>
+                                    <p>壹、紅利點數累積</p>
+                                    <p>
+                                        1、累積紅利點數前要準備些什麼？<br>
+                                        在累積紅利點數前，請您先註冊成為 FunOne 會員，並通過手機身分認證，即可開啟累積紅利點數的服務。<br>
+                                        ※由於紅利點數發放時將依照GASH點數儲值時所輸入的手機號碼進行派發，若儲值當下尚未成為 FunOne 會員，須於儲值後登入 FunOne Points 官方網站，進行會員註冊與點數補領。<br>
+                                        ※請注意!會員註冊時，需綁定與儲值時輸入的相同手機號碼，且事後補領紅利點數不影響其使用期限(使用期限規定詳參本規約第五點)。<br>
+                                        ※您若申請終止會員或經本公司撤銷、終止您的會員資格，則紅利點數及優惠等同時失效。日後如重新申請會員，將視為新會員，過去的點數與優惠將不予追溯或補發。
+                                    </p>
+                                    <p>
+                                        2、紅利點數怎麼獲得？<br>
+                                        1. 會員於累點通路(以下定義)進行 GASH 點數儲值，並輸入正確的會員手機號碼才可累積紅利點數，若輸入錯誤，恕不接受申請追溯或補發點數。<br>
+                                        ※ 請注意! 購買 GASH 點數後未實際儲值於遊戲內者，無法累積紅利點數!<br>
+                                        2. 每筆交易僅限登錄一組會員手機，儲值 GASH 點數時，請務必自行核對輸入資訊之正確性。<br>
+                                        3. 會員須使用台灣手機門號（+886 開頭）才能參與累點機制，若使用其他國家或地區之手機號碼，將無法累積紅利點數。<br>
+                                        4. 本公司目前僅依台幣交易之付款方式計算紅利點數之派發，並保留依實際營運成本、合作廠商之條件或其他必要因素進行變更之權利。若有任何調整，將以本公司公告為準。<br>
+                                        5. 會員於指定活動期間內參與點數相關活動並符合活動規則者，可依活動公告所載之內容與日期獲得相應點數。
+                                    </p>
+                                    <p>
+                                        3、可以累積紅利點數的通路及活動?<br>
+                                        1. 累點通路：凡與 GASH 點數儲值合作之遊戲通路皆可登錄累積紅利點數。惟各遊戲通路之適用規則有所差異，本公司將另行公告適用之累點通路及相關付款規則，會員應依公告內容為準。<br>
+                                        2. 累點活動：依各專案活動辦法及公告內容辦理。
+                                    </p>
+                                    <p>
+                                        4、紅利點數的計算方式？<br>
+                                        1. 單筆交易中每累積新台幣50元之儲值金額，可獲得1點紅利點數，點數計算至整數為止，小數點以後無條件捨去。<br>
+                                        ※ 專案活動給點計算方式，依各活動公告內容為準。<br>
+                                        2. 紅利點數之計算以「實際支付金額」為準，不含運費、折扣金額及其他非商品價值的支出。<br>
+                                        3. 本公司保留排除特定活動或商品（如：促銷商品、特殊折扣品）累積紅利點數之權利。
+                                    </p>
+                                    <p>
+                                        5、紅利點數的使用期限？<br>
+                                        1. 當年度所累積之紅利點數需於隔年度12月31日(含)前使用完畢，若未使用將會自動歸零，恕無法展延使用、折算現金或給予其他給付。<br>
+                                        2. 紅利點數之累積計算依會員進行該筆儲值交易之年度為準，事後補領不影響紅利點數之使用期限。例如:若您於2025年6月進行儲值，並於2026年11月才完成會員註冊並補領點數，則該筆儲值獲得的點數仍依2025年度累積計算，最晚須於2026年12月31日前使用，逾期將自動歸零。<br>
+                                        3. 紅利點數係依點數效期依序扣點，點數效期先到期者優先扣除，點數到期日相同時，則扣除先入帳之點數。紅利點數若已逾效期，則不歸還。<br>
+                                        4. 本公司保有依各專案活動調整該點數規則之權利，相關規定以各專案活動公告內容為準。
+                                    </p>
+                                    <p>
+                                        6、注意事項<br>
+                                        1. 紅利點數僅限 FunOne 會員本人帳號使用，於會員完成兌換前並不構成會員之資產，且會員不得要求將紅利點數變換現金、其他利益或轉讓、贈與他人。<br>
+                                        2. 若訂單退貨或取消，該訂單所獲得的紅利點數將自動扣回。<br>
+                                        3. 若會員以不正當方式獲取紅利點數（如濫用退貨機制、透過非正常交易方式獲取點數等），本公司有權暫停或取消其紅利點數，並視情節決定是否限制其使用本服務。
+                                    </p>
+                                    <hr>
+                                    <p>貳、紅利點數兌換</p>
+                                    <p>1、會員得使用紅利點數兌換/折抵特定合作通路或商家之商品，我們盡力提供多樣的商品回饋，詳情請參考我們的網站：https://points.funone.io。</p>
+                                    <p>2、紅利點數目前僅適用於台灣地區，會員僅能兌換適用於台灣之商品或服務，本公司得視市場狀況或合作夥伴政策，調整可兌換之商品或服務，並保留變更兌換條件之權利。</p>
+                                    <p>3、您所兌換的服務或商品，可能會有使用條件的限制，包括但不限於適用對象、適用期間等，兌換商品前，請仔細閱讀相關注意事項；服務或商品經兌換後無法再辦理退換貨、或是換回紅利點數。</p>
+                                    <p>4、特別提醒！紅利點數兌換的商品或服務，係由相關供應商或合作夥伴直接提供，本公司僅負責兌換程序，不對商品或服務的品質、可用性或任何後續問題負責。若需查詢或反映兌換商品或服務相關問題，請依商品或服務標示之聯繫資訊，直接聯繫供應商。我們會盡力篩選優質供應商，但不保證所有兌換商品或服務的滿意度，敬請理解。</p>
+                                    <p>參、其他說明</p>
+                                    <p>1. 有關本規約未規定之事項，仍適用 FunOne 會員中心服務條款。</p>
+                                    <p>2. 若因天災等不可抗力或其他不可歸責於本公司之因素，致使無法提供本服務時，將於系統恢復正常後依公告說明辦理。</p>
+                                    <p>3. 本公司保留隨時修改、變更、暫停或終止本規約的權利，包括但不限於兌換資格、累點計算、兌換商品及購物折抵方式，並有權停止所有紅利點數兌換/折抵活動。相關變動將以公告為之，請以最新公告內容為準。</p>
+                                    <p>4. 若有疑問，歡迎聯繫我們的客服專線：02-8226-1305，或來信客服信箱：b2ccs@gashpoint.com。</p>
+                                    <p>5. 本規約之解釋與適用，以中華民國法律為準據法，如因本規約產生爭議而涉訟，同意以臺灣台北地方法院為第一審管轄法院。</p>
+                                    <p>感謝您的支持與愛護！快來累積紅利點數，享受更多回饋吧！ </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li><b>GASH 活動</b>｜綁定 beanfun! 帳號，享更多精彩優惠！</li>
+                    </ul>
+                    <p>詳情請見 <a class="link-gray" href="https://points.funone.io/" target="_blank">FunOne Points</a> 及 <a class="link-gray" href="https://tw.gashpoint.com/" target="_blank">GASH</a> 官方網站</p>
+                </div>
+                <div>
+                    <div>
+                        <label>
+                            <input name="chkTransBooking" type="checkbox" id="chkTransBooking" />
+                            <span>我了解並同意以下事項</span>
+                        </label>
+                        <label>
+                            <span>為積極配合政府防治詐騙，爭取黃金報案時間，降低資產損失，即日起試行<span style="color: red;">樂豆點「序號儲值」延遲 24 小時入帳，線上購點不受影響。</span></span>
+                        </label>
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <button id="btn_Enter">進行儲值</button>
+                    </div>
+                    <div>
+                        <label class="title_2" style="color: gray;">
+                            <span>※注意：樂豆點序號無法使用於手機遊戲</span><br />
+                            <span>
+                                ※若疑似遭遇詐騙：請盡速撥打
+                                <a href="https://165.npa.gov.tw/#/report/statement" target="_blank" class="link-gray">165反詐騙</a>專線報案。服務調整相關資訊亦可參閱
+                                <a href="https://bean.fun/CwEwB" target="_blank" class="link-gray">公告內容</a>
+                            </span>
+                            <br />
+                            <span>※即日起，開通beanfun!錢包橘子支付會員即可免延遲入點〈<a href="@ViewBag.BeanfunURL">前往註冊</a> 〉</span><br />
+                        </label>
+                    </div>
+                </div>
+                <!-- Booking End -->
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
