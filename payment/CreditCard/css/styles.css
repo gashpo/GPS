@@ -906,6 +906,11 @@ main section ul li.points {
   gap: 8px;
   margin-top: 8px;
 }
+main section ul li.points span,
+main section ul li.points a,
+main section ul li.points p {
+  font-family: "Noto Sans TC", sans-serif;
+}
 main section ul li.points a {
   text-decoration: underline;
   color: #6500ee;
@@ -977,6 +982,7 @@ section.fixed-info p.price {
 }
 .order-info p span {
   color: #e72e6b;
+  font-weight: 500;
 }
 
 .cc-info {

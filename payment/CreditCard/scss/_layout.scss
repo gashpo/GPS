@@ -91,6 +91,12 @@ main {
         gap: 8px;
         margin-top: 8px;
 
+        span,
+        a,
+        p {
+          font-family: map-get($font, NotoSans);
+        }
+
         a {
           text-decoration: underline;
           color: map-get($color, FunOne-500);
@@ -171,6 +177,7 @@ section.fixed-info {
 
     span {
       color: map-get($color, Primary-500);
+      font-weight: map-get($font-weight, Medium);
     }
   }
 }
