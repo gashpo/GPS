@@ -897,7 +897,7 @@ main section ul li.points {
   position: relative;
   color: #6500ee;
   background-color: #f0e5fd;
-  padding: 28px 16px 12px;
+  padding: 12px 16px;
   border-radius: 8px;
   font-size: 12px;
   display: flex;
@@ -931,6 +931,7 @@ main section ul li.points .scrollable div {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  padding-right: 8px;
 }
 main section ul li.points .scrollable div p {
   font-size: 12px;
@@ -1020,6 +1021,9 @@ section.fixed-info p.price {
 .cc-info .input-group {
   display: flex;
   gap: 4px;
+}
+.cc-info .input-group > div {
+  flex: 1;
 }
 
 .invoice-info li:first-child select {
