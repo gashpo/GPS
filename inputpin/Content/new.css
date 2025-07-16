@@ -221,6 +221,12 @@ h6 {
     font-weight: 700;
 }
 
+.delay-check {
+    span {
+        font-weight: 400;
+    }
+}
+
 a.link-gray {
 	text-decoration: underline;
 	color: #808080;
