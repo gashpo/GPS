@@ -21,6 +21,7 @@ html {
 * {
   @include font(20);
   font-family: "Varela", "Noto Sans TC", sans-serif;
+  font-weight: map-get($font-weight, Light);
 }
 
 body {

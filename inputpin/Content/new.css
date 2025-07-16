@@ -170,7 +170,12 @@ button:hover {
     border-radius: 8px;
     padding: 12px 16px;
     color: #6500EE;
-    font-size: 15px;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.event_info p {
+    margin-bottom: 8px;
 }
 
 .event_info a {
@@ -208,7 +213,7 @@ button:hover {
 .scrollable div::-webkit-scrollbar-thumb {
     width: 5px;
     border-radius: 10px;
-    background-color: rgba(51, 51, 51, 0.5);
+    background-color: #9A9DA7;
 }
 
 h6 {

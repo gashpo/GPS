@@ -91,19 +91,6 @@ main {
         gap: 8px;
         margin-top: 8px;
 
-        .points-title {
-          position: absolute;
-          left: 0;
-          top: -8px;
-          background-color: map-get($color, FunOne-300);
-          color: map-get($color, Gray-0);
-          font-size: 12px;
-          padding: 6px 8px 6px 14px;
-          border-radius: 20px 20px 20px 0;
-          font-weight: 500;
-          line-height: 14px;
-        }
-
         a {
           text-decoration: underline;
           color: map-get($color, FunOne-500);

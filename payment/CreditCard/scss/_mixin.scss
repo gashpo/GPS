@@ -23,7 +23,7 @@
 
 // 用法：
 // .NotoSans200 {
-//     @include font(map-get($font, NotoSans), map-get($font-weight, Thin), 24);
+//     @include font(map-get($font-weight, Thin), 24);
 // }
 
 // 字重
