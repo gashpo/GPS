@@ -1,9 +1,14 @@
 label {
-  display: block;
+  // display: inline-block;
   width: 100%;
   margin-bottom: 8px;
   @include font(15, SemiBold);
   color: map-get($color, primaryA);
+
+  + .tooltip {
+    display: inline-block;
+    transform: translate(-4px, 3px);
+  }
 }
 
 input,

@@ -112,14 +112,13 @@
                 <section class="cc-info">
                     <h2>
                         信用卡資訊
-                        <div class="tooltip" @click="toggleTooltip" @mouseover="moverShow" @mouseleave="mleaveHide">
+                        <div class="tooltip" @click="toggleTooltip('tooltip1', $event)" @mouseover="moverShow('tooltip1')" @mouseleave="mleaveHide('tooltip1')">
                             <img src="img/icon/question.svg" />
-                            <ul :class="{ 'show': isTooltipVisible }">
-                                <li>點擊輸入框可更換信用卡資訊。</li>
-                                <li>
-                                    勾選同意儲存，可在下次交易時自動代入信用卡資訊；若不勾選，則不會代入。
-                                </li>
-                            </ul>
+                            <div class="tooltip-container"
+                                :ref="'tooltip1'"
+                                :class="{ 'show': isTooltipVisible['tooltip1'] }">
+                                點擊輸入框可輸入或修改信用卡資訊。
+                            </div>
                         </div>
                     </h2>
                     <button type="button" @click="clearCC" class="underlined">
@@ -175,7 +174,17 @@
                         </li>
                         <li>
                             <input type="checkbox" class="checkbox" value="agreeProductTerms" id="ccAgree" />
-                            <label for="ccAgree">我同意儲存此張信用卡，方便快速結帳</label>
+                            <label for="ccAgree">
+                                我同意儲存此張信用卡，方便快速結帳
+                            </label>
+                            <div class="tooltip" @click="toggleTooltip('tooltip2', $event)" @mouseover="moverShow('tooltip2')" @mouseleave="mleaveHide('tooltip2')">
+                                <img src="img/icon/question.svg" />
+                                <div class="tooltip-container"
+                                    :ref="'tooltip2'"
+                                    :class="{ 'show': isTooltipVisible['tooltip2'] }">
+                                    勾選同意儲存，可在下次交易時自動代入信用卡資訊；若不勾選，系統不會保存任何信用卡資訊，交易完成後將立即清除所有卡片資料。
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </section>
@@ -312,7 +321,10 @@
                 verifyPhoneCode: "TW",
                 verifyPhoneID: "",
                 SMSID: "",
-                isTooltipVisible: false,
+                isTooltipVisible: {
+                    tooltip1: false,
+                    tooltip2: false
+                },
                 isHoverSupported: window.matchMedia("(hover: hover)").matches,
 
                 countryCodeOption: [
@@ -398,33 +410,68 @@
             },
 
             // 信用卡說明
-            toggleTooltip() {
+            toggleTooltip(key, event) {
                 if (!this.isHoverSupported) {
-                    this.isTooltipVisible = !this.isTooltipVisible;
+                    // 手機點擊切換
+                    this.isTooltipVisible[key] = !this.isTooltipVisible[key];
+
+                    if (this.isTooltipVisible[key]) {
+                    this.adjustPosition(key);
+                    }
                 }
             },
-            tooltipShow() {
-                this.isTooltipVisible = true;
+            tooltipShow(key) {
+                this.isTooltipVisible[key] = true;
+                this.adjustPosition(key);
             },
-            tooltipHide() {
-                this.isTooltipVisible = false;
+            tooltipHide(key) {
+                this.isTooltipVisible[key] = false;
             },
-            moverShow() {
+            moverShow(key) {
                 if (this.isHoverSupported && window.innerWidth > 768) {
-                    this.tooltipShow();
+                    this.tooltipShow(key);
                 }
             },
-            mleaveHide() {
+            mleaveHide(key) {
                 if (this.isHoverSupported && window.innerWidth > 768) {
-                    this.tooltipHide();
+                    this.tooltipHide(key);
                 }
             },
             handleBodyClick(event) {
-                const tooltip = document.querySelector(".tooltip");
-                if (!tooltip.contains(event.target)) {
-                    this.tooltipHide();
-                    console.log("hi");
+                // 手機點外面關閉
+                if (!this.isHoverSupported) {
+                    for (let key in this.isTooltipVisible) {
+                    const tooltipEl = this.$refs[key];
+                    const triggerEl = tooltipEl?.parentNode;
+                    if (tooltipEl && triggerEl && !triggerEl.contains(event.target)) {
+                        this.tooltipHide(key);
+                    }
+                    }
                 }
+            },
+            adjustPosition(key) {
+                this.$nextTick(() => {
+                    const tooltipEl = this.$refs[key];
+                    if (!tooltipEl) return;
+
+                    // reset
+                    tooltipEl.style.left = "50%";
+                    tooltipEl.style.transform = "translateX(-50%)";
+                    tooltipEl.style.setProperty('--arrow-offset', '50%');
+
+                    const rect = tooltipEl.getBoundingClientRect();
+                    const padding = 8;
+
+                    if (rect.right > window.innerWidth - padding) {
+                    const overflow = rect.right - window.innerWidth + padding;
+                    tooltipEl.style.left = `calc(50% - ${overflow}px)`;
+                    tooltipEl.style.setProperty('--arrow-offset', `${50 + (overflow * 100 / rect.width)}%`);
+                    } else if (rect.left < padding) {
+                    const overflow = padding - rect.left;
+                    tooltipEl.style.left = `calc(50% + ${overflow}px)`;
+                    tooltipEl.style.setProperty('--arrow-offset', `${50 - (overflow * 100 / rect.width)}%`);
+                    }
+                });
             },
         },
         mounted() {
