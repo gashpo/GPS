@@ -590,6 +590,7 @@ i:before {
 }
 
 label {
+  display: inline-block;
   width: 100%;
   margin-bottom: 8px;
   font-weight: 600;
@@ -893,7 +894,7 @@ main section ul li.countryCode {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  gap: 4px;
+  gap: 0 4px;
 }
 main section ul li.countryCode select {
   flex: 1;
