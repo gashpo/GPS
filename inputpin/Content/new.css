@@ -172,6 +172,8 @@ button:hover {
     color: #6500EE;
     font-size: 12px;
     font-weight: 300;
+    margin: 16px auto 20px;
+    width: 100%;
 }
 
 .event_info p {
