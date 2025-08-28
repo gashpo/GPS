@@ -114,7 +114,7 @@ button {
     color: #FFF;
     border-radius: 10px;
     border: none;
-    margin-top: 30px;
+    margin-top: 24px;
     font-size: 24px;
     font-weight: bold;
 }
@@ -176,6 +176,10 @@ button:hover {
     width: 100%;
 }
 
+.event_info.pointMode {
+    transform: translate(0, 16px);
+}
+
 .event_info p {
     margin-bottom: 8px;
 }
@@ -224,6 +228,8 @@ h6 {
 }
 
 .delay-check {
+    transform: translate(0, 16px);
+
     span {
         font-weight: 400;
     }
